@@ -47,13 +47,13 @@
                                                  [(str last separator val)]
                                                  [last (str (complete-row last (.indexOf cols path)) val)]))
           perform-item (fn perform-item ([table cell] (perform-item (pop (:rows table))
-                                                                    (last (:rows table))
+                                                                    (peek (:rows table))
                                                                     (paths (:cols table) (:path cell)) 
                                                                     (:path cell)
                                                                     (:text cell)))
-                         ([butlast last cols path val] {:cols cols :rows (into [] (concat butlast (perform-row last cols path val)))}))]
-      (:rows (reduce
-               perform-item
-               {:cols [""] :rows [""]}
-               (path-text-pairs xml)))))
+                         ([butlast last cols path val] {:cols cols :rows (into [] (concat butlast (perform-row last cols path val)))}))
+          table (reduce perform-item 
+                        {:cols [] :rows [""]}
+                        (path-text-pairs xml))]
+      (into [(string/join separator (:cols table))] (subvec (:rows table) 1))))
   ([xml] (xml-to-csv xml ",")))

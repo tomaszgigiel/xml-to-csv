@@ -62,4 +62,4 @@
   (is (some #(= {:path "/books/book/title", :text "Clojure in Action"} %) (this-xpath/path-text-pairs xml)) "list path text pairs"))
 
 (deftest xml-to-csv-test
-  (is (= (string/split-lines (this-common/string-from-resource "simple.csv")) (this-xpath/xml-to-csv xml ";")) "simple xml to csv"))
+  (is (= (string/split-lines (this-common/string-from-resource "simple.csv")) (this-xpath/xml-to-csv xml ";"))) "simple xml to csv")
