@@ -5,38 +5,19 @@
   (:require [pl.tomaszgigiel.xml-to-csv.common :as this-common])
   (:gen-class))
 
-(defn xpath-leaf?
-  [n]
-  (empty? (xpath/$x "./*" n)))
-
-(defn tree-ancestry-seq
-  [branch? children root]
-  (let [walk
-        (fn walk [node ancestors] 
-          (lazy-seq 
-            (conj (when (branch? node) (mapcat (fn [n] (walk n (conj ancestors node)))(children node)))
-                  {:node node :ancestors ancestors})))]
-    (walk root [])))
-
-(defn xpath-ancestry-seq
+;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L4871
+(defn path-text-seq
   [xml]
-  (tree-ancestry-seq (fn [n] (:node n))            ; branch?: nil or node
-                     (fn [n] (xpath/$x "./*" n))   ; children: "./*" - children of current
-                     (first (xpath/$x "/*" xml)))) ; root: "/*" - top
-
-;; disadvantages: traversing twice, tree, list
-(defn xpath-ancestry-transformed-seq
-  [xml f]
-  (map f (xpath-ancestry-seq xml)))
-
-(defn path-text-pairs
-  [xml]
-  (let [node-tag (fn [n] (str "/" (name (:tag n))))
-        node-tag-path (fn [ns] (string/join (map node-tag ns)))
-        full-path (fn [m] (str (node-tag-path (:ancestors m)) (node-tag (:node m))))
-        node-text (fn [m] (:text (:node m)))
-        path-text-pair (fn [m] (when (xpath-leaf? m) {:path (full-path m) :text (node-text m)}))]
-    (filter some? (xpath-ancestry-transformed-seq xml path-text-pair))))
+  (let [branch? (fn [n] (:node n))
+        children (fn [n] (xpath/$x "./*" n))
+        leaf? (fn [n] (empty? (children n)))
+        root (first (xpath/$x "/*" xml))
+        walk (fn walk [node path]
+               (let [node-path (str path "/" (name (:tag node)))]
+                 (lazy-seq (filter some?
+                                   (conj (when (branch? node) (mapcat (fn [n] (walk n node-path)) (children node)))
+                                         (when (leaf? node) {:path node-path :text (:text node)}))))))]
+    (walk root nil)))
 
 (defn xml-to-csv
   ([xml separator]
@@ -54,6 +35,6 @@
                          ([butlast last cols path val] {:cols cols :rows (into [] (concat butlast (perform-row last cols path val)))}))
           table (reduce perform-item 
                         {:cols [] :rows [""]}
-                        (path-text-pairs xml))]
+                        (path-text-seq xml))]
       (into [(string/join separator (:cols table))] (subvec (:rows table) 1))))
   ([xml] (xml-to-csv xml ",")))
