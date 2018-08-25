@@ -18,3 +18,6 @@
 
 (deftest xml-to-csv-test
   (is (= (string/split-lines (this-common/string-from-resource "simple.csv")) (this-xpath/xml-to-csv xml ";"))) "simple xml to csv")
+
+(deftest big-xml-to-csv-test
+  (is (= 10502 (count (this-xpath/xml-to-csv (this-common/string-from-resource "sample-trapeze.xml") ";")))) "big xml to csv")
