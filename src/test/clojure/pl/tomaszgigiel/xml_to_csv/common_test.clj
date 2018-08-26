@@ -8,7 +8,7 @@
 (use-fixtures :each test-config/each-fixture)
 
 (deftest string-from-resource-test
-  (is (.contains (this-common/string-from-resource "simple.xml") "<books>")) "string")
+  (is (.contains (this-common/string-from-resource "sample-simple.xml") "<books>")) "string")
 
 (deftest not-nil?-test
   (is (= false (this-common/not-nil? nil)) "nil")
