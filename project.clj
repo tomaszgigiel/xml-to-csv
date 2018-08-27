@@ -4,6 +4,7 @@
   :license {:name "Apache License"
             :url "http://www.apache.org/licenses/LICENSE-2.0"}
   :dependencies [[org.clojure/clojure "1.9.0"]
+                 [org.clojure/data.xml "0.0.8"]
                  [org.clojure/tools.cli "0.3.7"]
                  [org.clojure/tools.logging "0.4.1"]
                  ;; otherwise log4j.properties has no effect
@@ -22,4 +23,3 @@
              :main-xml-to-csv {:main ^:skip-aot pl.tomaszgigiel.xml-to-csv.core}
              :dev {:resource-paths ["src/test/resources"] :jmx-opts ["-Xmx512m"]}}
   :aliases {"run-main-xml-to-csv" ["with-profile" "main-xml-to-csv,dev" "run"]})
-

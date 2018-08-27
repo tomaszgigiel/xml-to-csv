@@ -5,20 +5,6 @@
   (:require [pl.tomaszgigiel.xml-to-csv.common :as this-common])
   (:gen-class))
 
-;; https://github.com/clojure/clojure/blob/clojure-1.9.0/src/clj/clojure/core.clj#L4871
-(defn path-text-seq
-  [xml]
-  (let [branch? (fn [n] (:node n))
-        children (fn [n] (xpath/$x "./*" n))
-        leaf? (fn [n] (empty? (children n)))
-        root (first (xpath/$x "/*" xml))
-        walk (fn walk [node path]
-               (let [node-path (str path "/" (name (:tag node)))]
-                 (lazy-seq (filter some?
-                                   (conj (when (branch? node) (mapcat (fn [n] (walk n node-path)) (children node)))
-                                         (when (leaf? node) {:path node-path :text (:text node)}))))))]
-    (walk root nil)))
-
 (defn xml-to-csv
   ([xml separator]
     (let [paths (fn [ps p] (if(this-common/in? ps p)ps (conj ps p)))
