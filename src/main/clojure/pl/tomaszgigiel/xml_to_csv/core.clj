@@ -1,9 +1,9 @@
 (ns pl.tomaszgigiel.xml-to-csv.core
-  (:require [clojure.java.io :as io])
+  (:require [clojure.java.io :as io])  
   (:require [clojure.string :as string])
   (:require [clojure.tools.cli :refer [parse-opts]])
   (:require [clojure.tools.logging :as log])
-  (:require [pl.tomaszgigiel.xml-to-csv.clj-xpath :as this-xpath])
+  (:require [pl.tomaszgigiel.xml-to-csv.common :as common])
   (:import java.io.File)
   (:gen-class))
 
@@ -49,9 +49,9 @@
   (System/exit status))
 
 (defn xml-to-csv [input output]
-  (with-open [in (io/input-stream input)
+  (with-open [in (io/reader input)
               out (io/writer output)]
-    (doseq [line (this-xpath/xml-to-csv in ";")]
+    (doseq [line (common/xml-to-csv in ";")]
       (.write out line)
       (.newLine out))))
 
@@ -60,5 +60,5 @@
   (let [{:keys [uri options exit-message ok?]} (validate-args args)]
     (if exit-message
       (exit (if ok? 0 1) exit-message)
-      (xml-to-csv (new File (:input-file options)) (new File (:output-file options)))))
+      (xml-to-csv (:input-file options) (:output-file options))))
   (log/info "ok"))

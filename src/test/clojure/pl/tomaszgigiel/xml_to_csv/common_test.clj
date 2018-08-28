@@ -1,34 +1,34 @@
 (ns pl.tomaszgigiel.xml-to-csv.common-test
   (:use [clojure.test])
-  (:require [clojure.java.io :as io])
-  (:require [pl.tomaszgigiel.xml-to-csv.common :as this-common])
-  (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config]))
+  (:require [clojure.data.xml :as xml])
+  (:require [clojure.edn :as edn])
+  (:require [clojure.string :as string])
+  (:require [pl.tomaszgigiel.xml-to-csv.common :as common])
+  (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
+  (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
+  (:import java.io.StringReader))
 
 (use-fixtures :once test-config/once-fixture)
 (use-fixtures :each test-config/each-fixture)
 
-(deftest string-from-resource-test
-  (is (.contains (this-common/string-from-resource "sample-simple.xml") "<books>")) "string")
+(def sample-simple-xml (misc/string-from-resource "sample-simple.xml"))
+(def sample-trapeze-xml (misc/string-from-resource "sample-trapeze.xml"))
 
-(deftest not-nil?-test
-  (is (= false (this-common/not-nil? nil)) "nil")
-  (is (= true (this-common/not-nil? "ok")) "not nil"))
+(deftest path-text-seq-test
+  (is (= (list {:path [:a :b], :text "foo"} {:path [:a :c], :text "boo"}) (->> "<a><b>foo</b><c>boo</c></a>" StringReader. xml/parse common/path-text-seq)))
+  (is (= (->> "sample-simple.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/path-text-seq))))
 
-(deftest indexes-of-test
-  (is (= () (this-common/indexes-of "aa" "," 0)))
-  (is (= () (this-common/indexes-of "aa" "," 3)))
-  (is (= (list 2) (this-common/indexes-of "aa," "," 0)))
-  (is (= () (this-common/indexes-of "aa," "," 3)))
-  (is (= (list 2) (this-common/indexes-of "aa,bb" "," 0)))
-  (is (= () (this-common/indexes-of "aa,bb" "," 3)))
-  (is (= (list 2 5) (this-common/indexes-of "aa,bb," "," 0)))
-  (is (= (list 5) (this-common/indexes-of "aa,bb," "," 3)))
-  (is (= (list 2 5) (this-common/indexes-of "aa,bb,cc" "," 0)))
-  (is (= (list 5) (this-common/indexes-of "aa,bb,cc" "," 3)))
-  (is (= (list 3 7) (this-common/indexes-of "aaa,bbb,ccc" "," 0)))
-  (is (= (list 3 7) (this-common/indexes-of "aaa,bbb,ccc" "," 3))))
+(deftest xml-to-csv-table
+  (is (= {:cols [[:a :b] [:a :c]], :rows [["foo" "boo"]]} (->> "<a><b>foo</b><c>boo</c></a>" StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= 4 (time (count (:rows (->> sample-simple-xml StringReader. xml/parse common/xml-to-csv-table))))))
+  (is (= (->> "sample-simple.table.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= 500 (time (count (:rows (->> sample-trapeze-xml StringReader. xml/parse common/xml-to-csv-table)))))))
 
-(deftest in?-test
-  (is (= true (this-common/in? [1 2 3] 1)))
-  (is (= true (this-common/in? [1 2 3] 2)))
-  (is (= nil (this-common/in? [1 2 3] 4))))
+(deftest xml-to-csv-test
+  (is (= "a/b;a/c\nfoo;boo") (time (-> "<a><b>foo</b><c>boo</c></a>" StringReader. (common/xml-to-csv ";")))) "xml to csv")
+
+(deftest simple-xml-to-csv-test
+  (is (= (string/split-lines (misc/string-from-resource "sample-simple.csv")) (time (-> sample-simple-xml StringReader. (common/xml-to-csv ";"))))) "sample-simple.xml to csv")
+
+(deftest trapeze-xml-to-csv-test
+  (is (= (string/split-lines (misc/string-from-resource "sample-trapeze.csv")) (time (-> sample-trapeze-xml StringReader. (common/xml-to-csv ";"))))) "sample-trapeze.xml to csv")
