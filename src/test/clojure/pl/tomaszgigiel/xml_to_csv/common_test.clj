@@ -19,7 +19,14 @@
   (is (= (->> "sample-simple.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/path-text-seq))))
 
 (deftest xml-to-csv-table
-  (is (= {:cols [[:a :b] [:a :c]], :rows [["foo" "boo"]]} (->> "<a><b>foo</b><c>boo</c></a>" StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= (->> "short/a.edn" misc/string-from-resource edn/read-string) (->> "short/a.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= (->> "short/b.edn" misc/string-from-resource edn/read-string) (->> "short/b.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  ;(is (= (->> "short/c.edn" misc/string-from-resource edn/read-string) (->> "short/c.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  ;(is (= (->> "short/d.edn" misc/string-from-resource edn/read-string) (->> "short/d.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= (->> "short/e.edn" misc/string-from-resource edn/read-string) (->> "short/e.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  ;(is (= (->> "short/f.edn" misc/string-from-resource edn/read-string) (->> "short/f.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  ;;(is (= (->> "short/g.edn" misc/string-from-resource edn/read-string) (->> "short/g.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= (->> "short/h.edn" misc/string-from-resource edn/read-string) (->> "short/h.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   (is (= 4 (time (count (:rows (->> sample-simple-xml StringReader. xml/parse common/xml-to-csv-table))))))
   (is (= (->> "sample-simple.table.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/xml-to-csv-table)))
   (is (= 500 (time (count (:rows (->> sample-trapeze-xml StringReader. xml/parse common/xml-to-csv-table)))))))
