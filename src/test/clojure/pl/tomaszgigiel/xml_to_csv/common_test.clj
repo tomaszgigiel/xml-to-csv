@@ -32,10 +32,20 @@
   (is (= 500 (time (count (:rows (->> sample-trapeze-xml StringReader. xml/parse common/xml-to-csv-table)))))))
 
 (deftest xml-to-csv-test
-  (is (= "a/b;a/c\nfoo;boo") (time (-> "<a><b>foo</b><c>boo</c></a>" StringReader. (common/xml-to-csv ";")))) "xml to csv")
+  (is (= (->> "short/a.csv" misc/string-from-resource string/split-lines) (-> "short/a.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  (is (= (->> "short/b.csv" misc/string-from-resource string/split-lines) (-> "short/b.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/c.csv" misc/string-from-resource string/split-lines) (-> "short/c.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/d.csv" misc/string-from-resource string/split-lines) (-> "short/d.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/e.csv" misc/string-from-resource string/split-lines) (-> "short/e.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/f.csv" misc/string-from-resource string/split-lines) (-> "short/f.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/g.csv" misc/string-from-resource string/split-lines) (-> "short/g.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/h.csv" misc/string-from-resource string/split-lines) (-> "short/h.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/i.csv" misc/string-from-resource string/split-lines) (-> "short/i.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  ;(is (= (->> "short/j.csv" misc/string-from-resource string/split-lines) (-> "short/j.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  )
 
 (deftest simple-xml-to-csv-test
-  (is (= (string/split-lines (misc/string-from-resource "sample-simple.csv")) (time (-> sample-simple-xml StringReader. (common/xml-to-csv ";"))))) "sample-simple.xml to csv")
+  (is (= (->> "sample-simple.csv" misc/string-from-resource string/split-lines) (time (-> sample-simple-xml StringReader. (common/xml-to-csv ";"))))) "sample-simple.xml to csv")
 
 (deftest trapeze-xml-to-csv-test
-  (is (= (string/split-lines (misc/string-from-resource "sample-trapeze.csv")) (time (-> sample-trapeze-xml StringReader. (common/xml-to-csv ";"))))) "sample-trapeze.xml to csv")
+  (is (= (->> "sample-trapeze.csv" misc/string-from-resource string/split-lines) (time (-> sample-trapeze-xml StringReader. (common/xml-to-csv ";"))))) "sample-trapeze.xml to csv")

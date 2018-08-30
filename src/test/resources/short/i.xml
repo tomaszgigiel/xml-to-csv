@@ -1,0 +1,13 @@
+<a>
+ <b>
+  <c>aa</c>
+  <d>bb</d>
+  <e>cc</e>
+ </b>
+ <b>
+  <c>dd</c>
+  <d>ee</d>
+  <e>ff</e>
+ </b>
+ <f>gg</f>
+</a>
