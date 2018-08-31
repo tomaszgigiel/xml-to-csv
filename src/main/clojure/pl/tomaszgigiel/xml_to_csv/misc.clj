@@ -16,5 +16,3 @@
   "true if coll contains elem and nil otherwise"
   [coll elm]
   (some #(= elm %) coll))
-
-(defn empties [n] (if (> n 0) (conj (empties (- n 1)) []) []))

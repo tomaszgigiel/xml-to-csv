@@ -17,12 +17,14 @@
   [element]
   (let [perform-columns (fn [cs c] (if (< (.indexOf cs c) 0) (conj cs c) cs))
 
+        complete (fn [last start end path cols] (into [] (map-indexed (fn [idx x] (if (<(count (nth cols idx))(count path)) x nil)) (subvec last start end))))
+
         perform-row (fn [cols last path text] (let [idx-path (.indexOf cols path)
                                                     idx-cell (count last)]
                                                 (cond
                                                   (= idx-path idx-cell) [(conj last text)]
-                                                  (< idx-path idx-cell) [last (conj (subvec last 0 idx-path) text)]
-                                                  (> idx-path idx-cell) (flatten (conj last (misc/empties (- idx-cell idx-path)) text)))))
+                                                  (< idx-path idx-cell) [last (conj (complete last 0 idx-path path cols) text)]
+                                                  (> idx-path idx-cell) (flatten (conj last (vec(replicate (- idx-cell idx-path) nil)) text)))))
 
         perform-item (fn perform-item ([table item] (let [cols (perform-columns (:cols table) (:path item))
                                                           butlast (pop (:rows table))

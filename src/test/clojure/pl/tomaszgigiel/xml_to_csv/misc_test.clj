@@ -31,10 +31,3 @@
   (is (= true (misc/in? [1 2 3] 1)))
   (is (= true (misc/in? [1 2 3] 2)))
   (is (= nil (misc/in? [1 2 3] 4))))
-
-(deftest empties-test
-  (is (= [] (misc/empties -1)))
-  (is (= [] (misc/empties 0)))
-  (is (= [[]] (misc/empties 1)))
-  (is (= [[][]] (misc/empties 2)))
-  (is (= [[][][]] (misc/empties 3))))
