@@ -24,7 +24,7 @@
                                                 (cond
                                                   (= idx-path idx-cell) [(conj last text)]
                                                   (< idx-path idx-cell) [last (conj (complete last 0 idx-path path cols) text)]
-                                                  (> idx-path idx-cell) (flatten (conj last (vec(replicate (- idx-cell idx-path) nil)) text)))))
+                                                  (> idx-path idx-cell) [(flatten (conj last (vec(replicate (- idx-path idx-cell) nil)) text))])))
 
         perform-item (fn perform-item ([table item] (let [cols (perform-columns (:cols table) (:path item))
                                                           butlast (pop (:rows table))
