@@ -38,7 +38,7 @@
 
 (defn xml-to-csv
   [s separator]
-  (let [row-to-line (fn [r] (#(string/join separator r)))
+  (let [row-to-line (fn [r] (string/join separator (map #(if (nil? %) "nil" %) r)))
         cols-to-row (fn [cs] (map (fn[v] (string/join "/" (map name v))) cs))
         table (->> s xml/parse xml-to-csv-table)
         cols (:cols table)

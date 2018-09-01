@@ -34,7 +34,7 @@
 (deftest xml-to-csv-test
   (is (= (->> "short/a.csv" misc/string-from-resource string/split-lines) (-> "short/a.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
   (is (= (->> "short/b.csv" misc/string-from-resource string/split-lines) (-> "short/b.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
-  ;(is (= (->> "short/c.csv" misc/string-from-resource string/split-lines) (-> "short/c.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
+  (is (= (->> "short/c.csv" misc/string-from-resource string/split-lines) (-> "short/c.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
   ;(is (= (->> "short/d.csv" misc/string-from-resource string/split-lines) (-> "short/d.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
   ;(is (= (->> "short/e.csv" misc/string-from-resource string/split-lines) (-> "short/e.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
   ;(is (= (->> "short/f.csv" misc/string-from-resource string/split-lines) (-> "short/f.xml" misc/string-from-resource StringReader. (common/xml-to-csv ";"))))
