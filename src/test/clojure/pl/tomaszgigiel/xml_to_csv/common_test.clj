@@ -14,9 +14,9 @@
 (def sample-simple-xml (misc/string-from-resource "sample-simple.xml"))
 (def sample-trapeze-xml (misc/string-from-resource "sample-trapeze.xml"))
 
-(deftest path-text-seq-test
-  (is (= (list {:path [:a :b], :text "foo"} {:path [:a :c], :text "boo"}) (->> "<a><b>foo</b><c>boo</c></a>" StringReader. xml/parse common/path-text-seq)))
-  (is (= (->> "sample-simple.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/path-text-seq))))
+;;(deftest path-text-seq-test
+;;  (is (= (list {:path [:a :b], :text "foo"} {:path [:a :c], :text "boo"}) (->> "<a><b>foo</b><c>boo</c></a>" StringReader. xml/parse common/path-text-seq)))
+;;  (is (= (->> "sample-simple.edn" misc/string-from-resource edn/read-string) (->> sample-simple-xml StringReader. xml/parse common/path-text-seq))))
 
 (deftest xml-to-csv-table
   (is (= (->> "short/a.edn" misc/string-from-resource edn/read-string) (->> "short/a.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
@@ -24,7 +24,7 @@
   (is (= (->> "short/c.edn" misc/string-from-resource edn/read-string) (->> "short/c.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   (is (= (->> "short/d.edn" misc/string-from-resource edn/read-string) (->> "short/d.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   (is (= (->> "short/e.edn" misc/string-from-resource edn/read-string) (->> "short/e.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
-  ;(is (= (->> "short/f.edn" misc/string-from-resource edn/read-string) (->> "short/f.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
+  (is (= (->> "short/f.edn" misc/string-from-resource edn/read-string) (->> "short/f.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   ;;(is (= (->> "short/g.edn" misc/string-from-resource edn/read-string) (->> "short/g.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   (is (= (->> "short/h.edn" misc/string-from-resource edn/read-string) (->> "short/h.xml" misc/string-from-resource StringReader. xml/parse common/xml-to-csv-table)))
   (is (= 4 (time (count (:rows (->> sample-simple-xml StringReader. xml/parse common/xml-to-csv-table))))))
