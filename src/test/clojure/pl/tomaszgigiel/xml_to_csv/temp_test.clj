@@ -59,12 +59,34 @@
 (def xx [":a" "aa"])
 
 (def xx {":a" [{":b" [{":d" "bb"} {":e" "cc"}]} {":b" [{":c" "dd"} {":d" "ee"} {":e" "ff"}]}]})
-;; (([":b:a:d" "bb"] [":b:a:e" "cc"]) ([":b:a:c" "dd"] [":b:a:d" "ee"] [":b:a:e" "ff"]))
+;;(
+;;  ([":a:b:d" "bb"] [":a:b:e" "cc"])
+;;  ([":a:b:c" "dd"] [":a:b:d" "ee"] [":a:b:e" "ff"])
+;;)
+(def xx 
+
+  {":x" [  
+  {":a" [{":b" [{":d" "b1"} {":e" "c1"}]} {":b" [{":c" "d1"} {":d" "e1"} {":e" "f1"}]}]}
+  {":a" [{":b" [{":d" "b2"} {":e" "c2"}]} {":b" [{":c" "d2"} {":d" "e2"} {":e" "f2"}]}]}
+  ]}
+  
+  )
+;;(
+;;  (
+;;    ([":x:a:b:d" "b1"] [":x:a:b:e" "c1"]) 
+;;    ([":x:a:b:c" "d1"] [":x:a:b:d" "e1"] [":x:a:b:e" "f1"])
+;;  )
+;;  (
+;;    ([":x:a:b:d" "b2"] [":x:a:b:e" "c2"])
+;;    ([":x:a:b:c" "d2"] [":x:a:b:d" "e2"] [":x:a:b:e" "f2"])
+;;  )
+;;)
+
 (def xx {":a" "aa"})
 (def xx {":a" [{":b" "bb"} {":c" "cc"}]})
 
 (defn fun-xx [element path]   (cond     (and (map? element) (string? (first (vals element)))) [(str path (first (keys element))) (first (vals element))]
-    (and (map? element) (sequential? (first (vals element)))) (map #(fun-xx % (str (first (keys element)) path)) (first (vals element)))))
+    (and (map? element) (sequential? (first (vals element)))) (map #(fun-xx % (str path (first (keys element)))) (first (vals element)))))
 
 (fun-xx xx "")
 (vals xx)
