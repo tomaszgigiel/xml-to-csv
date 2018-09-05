@@ -10,29 +10,6 @@
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
   (:import java.io.StringReader))
 
-(defn path-text-seq
-  ([element] (flatten (path-text-seq element [] [])))
-  ([element path pre] (cond
-                     (string? element) {:path path :text element :pre pre}
-                     (sequential? element) (map #(path-text-seq % path pre) element)
-                     (map? element) (path-text-seq (:content element) (conj path (:tag element)) (conj pre element))
-                     :else nil)))
-
-
-(->> "short/f.xml" misc/string-from-resource StringReader. xml/parse path-text-seq)
-(->> "short/f.xml" misc/string-from-resource StringReader. xml/parse)
-
-(def x (->> "short/f.xml" misc/string-from-resource StringReader. xml/parse))
-
-#clojure.data.xml.Element{:tag :a, :attrs {}, :content (
-#clojure.data.xml.Element{:tag :b, :attrs {}, :content (
-#clojure.data.xml.Element{:tag :d, :attrs {}, :content ("bb")}
-#clojure.data.xml.Element{:tag :e, :attrs {}, :content ("cc")})}
-#clojure.data.xml.Element{:tag :b, :attrs {}, :content (
-#clojure.data.xml.Element{:tag :c, :attrs {}, :content ("dd")}
-#clojure.data.xml.Element{:tag :d, :attrs {}, :content ("ee")}
-#clojure.data.xml.Element{:tag :e, :attrs {}, :content ("ff")})})}
-
 (def clojure-x (->> "short/f.xml" io/resource str clojure-xml/parse))
 
 {:tag :a, :attrs nil, :content [
@@ -44,72 +21,43 @@
 {:tag :d, :attrs nil, :content ["ee"]}
 {:tag :e, :attrs nil, :content ["ff"]}]}]}
 
-;;{a nil ab nil abd "bb" abe "cc"}
-;;{a nil ab nil abc "dd" abd "bb" abe "cc"}
-
-;; element is a map
-;; element is a list
-;; element is a string
-
-;; {a ?}
-;; {ab ?} {ab ?}
-;; {a {b ?} {b ?}}
-
-(def xx [":a" [":b" [":d" "bb" ":e" "cc"]] [":b" [":c" "dd" ":d" "ee" ":e" "ff"]]])
-(def xx [":a" "aa"])
-
-(def xx {":a" [{":b" [{":d" "bb"} {":e" "cc"}]} {":b" [{":c" "dd"} {":d" "ee"} {":e" "ff"}]}]})
-;;(
-;;  ([":a:b:d" "bb"] [":a:b:e" "cc"])
-;;  ([":a:b:c" "dd"] [":a:b:d" "ee"] [":a:b:e" "ff"])
-;;)
-(def xx 
-
-  {":x" [  
-  {":a" [{":b" [{":d" "b1"} {":e" "c1"}]} {":b" [{":c" "d1"} {":d" "e1"} {":e" "f1"}]}]}
-  {":a" [{":b" [{":d" "b2"} {":e" "c2"}]} {":b" [{":c" "d2"} {":d" "e2"} {":e" "f2"}]}]}
-  ]}
-  
-  )
-;;(
-;;  (
-;;    ([":x:a:b:d" "b1"] [":x:a:b:e" "c1"]) 
-;;    ([":x:a:b:c" "d1"] [":x:a:b:d" "e1"] [":x:a:b:e" "f1"])
-;;  )
-;;  (
-;;    ([":x:a:b:d" "b2"] [":x:a:b:e" "c2"])
-;;    ([":x:a:b:c" "d2"] [":x:a:b:d" "e2"] [":x:a:b:e" "f2"])
-;;  )
-;;)
-
-(def xx {":a" "aa"})
-(def xx {":a" [{":b" "bb"} {":c" "cc"}]})
-
-(defn fun-xx [element path]   (cond     (and (map? element) (string? (first (vals element)))) [(str path (first (keys element))) (first (vals element))]
-    (and (map? element) (sequential? (first (vals element)))) (map #(fun-xx % (str path (first (keys element)))) (first (vals element)))))
-
-(fun-xx xx "")
-(vals xx)
-
-
-(defn fun-xx [element path]   (cond     (sequential? element) (map #(fun-xx % (str (first element) path)) (rest element))
+(defn tree-to-rows [element path] 
+  (let [new-path (str path "/" (name (:tag element)))
+        new-content (:content element)]
     (cond
-      (string? (first element))
-      )
-        ))
+      (string? (first new-content)) {:col new-path :val (first new-content)}
+      (sequential? new-content) (map #(tree-to-rows % new-path) new-content))))
 
+(defn row-columns [row] (reduce (fn [columns r] (conj columns (:col r))) [] row))
+(row-columns (list {:col "aa" :val "aa"} {:col "bb" :val "bb"}))
+;; ["aa" "bb"]
 
-
-
-(defn enrich [element column]
+(defn get-val
+  [row column]
   (cond
-    (string? element) {column element}
-    (sequential? element) (const {(:tag element) nil} (map #(enrich % column) element))
-    (map? element) (const {(str (:tag parent) (:tag element)) :content element} (enrich element (str (:tag parent) (:tag element))))
-    :else nil))
+    (empty? row) nil
+    (= (:col (first row)) column) (:val (first row))
+    :else (get-val (rest row) column)))
+(get-val (list {:col "aa" :val "aa"} {:col "bb" :val "bb"}) "aa")
+;; "aa"
 
-(enrich x "")
+(defn row-vals [row columns] (map #(get-val row %) columns))
+(row-vals (list {:col "aa", :val "aa"} {:col "bb", :val "bb"}) ["cc" "bb" "aa"])
+;; (nil "bb" "aa")
 
-;;a/b/d;a/b/e;a/b/c
-;;bb;cc;nil
-;;ee;ff;dd
+(defn table-columns [columns row-columns] (reduce (fn [cs c] (if (< (.indexOf cs c) 0) (conj cs c) cs)) columns row-columns))
+(table-columns ["cc" "bb"] (row-columns (list {:col "aa", :val "aa"} {:col "bb", :val "bb"})))
+;; ["cc" "bb" "aa"]
+
+(defn row-perform
+  [table row]
+  (let [row-columns (row-columns row)
+        table-columns (table-columns (:cols table) row-columns)
+        row-vals (row-vals row table-columns)]
+    {:cols table-columns :rows (conj (:rows table) row-vals)}))
+(row-perform {:cols ["cc" "bb"] :rows []} (list {:col "aa", :val "aa"} {:col "bb", :val "bb"}))
+;; {:cols ["cc" "bb" "aa"], :rows [(nil "bb" "aa")]}
+
+(defn tree-to-table [element] (reduce row-perform {:cols [] :rows []} (tree-to-rows element "")))
+(tree-to-table clojure-x)
+;; {:cols ["/a/b/d" "/a/b/e" "/a/b/c"], :rows [("bb" "cc") ("ee" "ff" "dd")]}
