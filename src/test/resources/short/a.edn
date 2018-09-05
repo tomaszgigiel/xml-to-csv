@@ -1,8 +1,4 @@
-{
-:cols
-[[:a :b] [:a :c]]
-
-:rows
-[["aa" "bb"]]
-}
-
+(
+  {:col "/a/b" :val "aa"}
+  {:col "/a/c" :val "bb"}
+)

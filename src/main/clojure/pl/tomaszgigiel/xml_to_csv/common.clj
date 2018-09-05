@@ -1,46 +1,38 @@
 (ns pl.tomaszgigiel.xml-to-csv.common
-  (:require [clojure.data.xml :as xml])
+  (:require [clojure.xml :as clojure-xml])
   (:require [clojure.string :as string])
   (:require [clojure.tools.logging :as log])
   (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:gen-class))
 
-(defn path-text-seq
-  ([element] (flatten (path-text-seq element [])))
-  ([element path] (cond
-                    (string? element) {:path path :text element}
-                    (sequential? element) (map #(path-text-seq % path) element)
-                    (map? element) (path-text-seq (:content element) (conj path (:tag element)))
-                    :else nil)))
+(defn tree-to-rows [element path] 
+  (let [new-path (str path "/" (name (:tag element)))
+        new-content (:content element)]
+    (cond
+      (string? (first new-content)) {:col new-path :val (first new-content)}
+      (sequential? new-content) (map #(tree-to-rows % new-path) new-content))))
 
-(defn xml-to-csv-table
-  [element]
-  (let [perform-columns (fn [cs c] (if (< (.indexOf cs c) 0) (conj cs c) cs))
+(defn row-columns [row] (reduce (fn [columns r] (conj columns (:col r))) [] row))
 
-        complete (fn [last start end path cols] (into [] (map-indexed (fn [idx x] (if (<(count (nth cols idx))(count path)) x nil)) (subvec last start end))))
+(defn get-val
+  [row column]
+  (cond
+    (empty? row) nil
+    (= (:col (first row)) column) (:val (first row))
+    :else (get-val (rest row) column)))
 
-        perform-row (fn [cols last path text] (let [idx-path (.indexOf cols path)
-                                                    idx-cell (count last)]
-                                                (cond
-                                                  (= idx-path idx-cell) [(conj last text)]
-                                                  (< idx-path idx-cell) [last (conj (complete last 0 idx-path path cols) text)]
-                                                  (> idx-path idx-cell) [(flatten (conj last (vec(replicate (- idx-path idx-cell) nil)) text))])))
+(defn table-columns [columns row-columns] (reduce (fn [cs c] (if (< (.indexOf cs c) 0) (conj cs c) cs)) columns row-columns))
 
-        perform-item (fn perform-item ([table item] (let [cols (perform-columns (:cols table) (:path item))
-                                                          butlast (pop (:rows table))
-                                                          last (peek (:rows table))
-                                                          path (:path item)
-                                                          text (:text item)
-                                                          last-new (perform-row cols last path text)]
-                                                      {:cols cols :rows (into butlast last-new)})))
-        table (reduce perform-item {:cols [] :rows [[]]} (path-text-seq element))]
-    table))
+(defn row-vals [row columns] (map #(get-val row %) columns))
+
+(defn row-perform
+  [table row]
+  (let [row-columns (row-columns row)
+        table-columns (table-columns (:cols table) row-columns)
+        row-vals (row-vals row table-columns)]
+    {:cols table-columns :rows (conj (:rows table) row-vals)}))
+
+(defn tree-to-table [element] (reduce row-perform {:cols [] :rows []} (tree-to-rows element "")))
 
 (defn xml-to-csv
-  [s separator]
-  (let [row-to-line (fn [r] (string/join separator (map #(if (nil? %) "nil" %) r)))
-        cols-to-row (fn [cs] (map (fn[v] (string/join "/" (map name v))) cs))
-        table (->> s xml/parse xml-to-csv-table)
-        cols (:cols table)
-        rows (:rows table)]
-    (cons (->> cols cols-to-row row-to-line) (map row-to-line rows))))
+  [s separator])
