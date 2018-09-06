@@ -5,12 +5,21 @@
   (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:gen-class))
 
-(defn tree-to-rows [element path] 
+(defn flatten-to-penultimate [l]
+  (cond
+    (and (list? l) (list? (first l)) (map? (first (first l)))) (map flatten-to-penultimate l)
+    (and (list? l) (list? (first l))) (flatten-to-penultimate (first l))
+    :else l))
+
+(defn tree-to-rows-helper [element path] 
   (let [new-path (str path "/" (name (:tag element)))
         new-content (:content element)]
     (cond
       (string? (first new-content)) {:col new-path :val (first new-content)}
-      (sequential? new-content) (map #(tree-to-rows % new-path) new-content))))
+      (sequential? new-content) (map #(tree-to-rows-helper % new-path) new-content))))
+
+(defn tree-to-rows [element]
+  (flatten-to-penultimate (tree-to-rows-helper element "")))
 
 (defn row-columns [row] (reduce (fn [columns r] (conj columns (:col r))) [] row))
 
