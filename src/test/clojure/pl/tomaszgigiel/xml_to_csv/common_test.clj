@@ -34,17 +34,18 @@
       k-element (->> "short/k.xml" io/resource str clojure-xml/parse)]
 
   (deftest tree-to-rows-test
-    ;;(is (= (->> "short/a-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a-element "")))
-    ;;(is (= (->> "short/b-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows b-element "")))
-    ;;(is (= (->> "short/c-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows c-element "")))
-    ;;(is (= (->> "short/d-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows d-element "")))
-    ;;(is (= (->> "short/e-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows e-element "")))
-    ;;(is (= (->> "short/f-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows f-element "")))
-    ;;(is (= (->> "short/g-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows g-element "")))
-    ;;(is (= (->> "short/h-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows h-element "")))
-    ;;(is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element "")))
-    ;;(is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element "")))
-    (is (= (->> "short/k-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows k-element))))
+   (is (= (->> "short/a-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a-element)))
+   (is (= (->> "short/b-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows b-element)))
+   (is (= (->> "short/c-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows c-element)))
+   ;;(is (= (->> "short/d-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows d-element)))
+   ;;(is (= (->> "short/e-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows e-element)))
+   ;;(is (= (->> "short/f-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows f-element)))
+   ;;(is (= (->> "short/g-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows g-element)))
+   ;;(is (= (->> "short/h-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows h-element)))
+   ;;(is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element)))
+   ;;(is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
+   ;;(is (= (->> "short/k-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows k-element)))
+   )
 
   ;;(deftest tree-to-table-test
     ;;(is (= (->> "short/a-tree-to-table.edn" misc/string-from-resource edn/read-string) (common/tree-to-table a-element)))
