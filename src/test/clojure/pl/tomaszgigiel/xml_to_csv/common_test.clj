@@ -44,7 +44,7 @@
    (is (= (->> "short/g-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows g-element)))
    (is (= (->> "short/h-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows h-element)))
    (is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element)))
-   (is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
+   ;;(is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
    (is (= (->> "short/k-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows k-element))))
 
   ;;(deftest tree-to-table-test

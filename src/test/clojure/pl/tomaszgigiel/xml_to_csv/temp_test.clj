@@ -1,79 +1,51 @@
 (ns pl.tomaszgigiel.xml-to-csv.temp-test
   (:use [clojure.test])
-  (:require [clojure.xml :as clojure-xml])
-  (:require [clojure.java.io :as io])
+  (:require [clojure.data.xml :as data-xml])
   (:require [clojure.edn :as edn])
+  (:require [clojure.java.io :as io])
   (:require [clojure.string :as string])
+  (:require [clojure.xml :as clojure-xml])
   (:require [pl.tomaszgigiel.xml-to-csv.common :as common])
   (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
   (:import java.io.StringReader))
 
-(def clojure-x (->> "short/k.xml" io/resource str clojure-xml/parse))
+(def clojure-i (->> "short/i.xml" io/resource str clojure-xml/parse))
 
-{:tag :a, :attrs nil, :content [
-{:tag :b, :attrs nil, :content [
-{:tag :d, :attrs nil, :content ["bb"]}
-{:tag :e, :attrs nil, :content ["cc"]}]}
-{:tag :b, :attrs nil, :content [
-{:tag :c, :attrs nil, :content ["dd"]}
-{:tag :d, :attrs nil, :content ["ee"]}
-{:tag :e, :attrs nil, :content ["ff"]}]}]}
+{
+ :tag :aa, :attrs nil, :content [
+                                 {:tag :bb, :attrs nil, :content [
+                                                                  {:tag :a, :attrs nil, :content ["a1"]}
+                                                                  {:tag :b, :attrs nil, :content ["b1"]}
+                                                                  {:tag :c, :attrs nil, :content ["c1"]}
+                                                                  ]
+                                  }
+                                 {:tag :bb, :attrs nil, :content [
+                                                                  {:tag :a, :attrs nil, :content ["a2"]}
+                                                                  {:tag :b, :attrs nil, :content ["b2"]}
+                                                                  {:tag :c, :attrs nil, :content ["c2"]}
+                                                                  ]
+                                  }
+                                 {:tag :d, :attrs nil, :content ["d1"]}
+                                 ]
+ }
 
-{:tag :a, :attrs nil, :content [
-{:tag :b, :attrs nil, :content ["aa"]}
-{:tag :c, :attrs nil, :content ["bb"]}]}
 
-(defn tree-to-rows [element path] 
-  (let [new-path (str path "/" (name (:tag element)))
-        new-content (:content element)]
-    (cond
-      (string? (first new-content)) {:col new-path :val (first new-content)}
-      (sequential? new-content) (map #(tree-to-rows % new-path) new-content))))
+(->> "short/i.xml" misc/string-from-resource data-xml/parse-str)
 
-(tree-to-rows clojure-x "")
-;; ({:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"})
-
-(defn row-columns [row] (reduce (fn [columns r] (conj columns (:col r))) [] row))
-(row-columns (list {:col "aa" :val "aa"} {:col "bb" :val "bb"}))
-;; ["aa" "bb"]
-(row-columns (list {:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"}))
-;; ["/a/b" "/a/c"]
-
-(defn get-val
-  [row column]
-  (cond
-    (empty? row) nil
-    (= (:col (first row)) column) (:val (first row))
-    :else (get-val (rest row) column)))
-(get-val (list {:col "aa" :val "aa"} {:col "bb" :val "bb"}) "aa")
-;; "aa"
-(get-val (list {:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"}) "/a/b")
-;; "aa"
-
-(defn row-vals [row columns] (map #(get-val row %) columns))
-(row-vals (list {:col "aa", :val "aa"} {:col "bb", :val "bb"}) ["cc" "bb" "aa"])
-;; (nil "bb" "aa")
-(row-vals (list {:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"}) ["/a/b" "/a/c"])
-;; ("aa" "bb")
-
-(defn table-columns [columns row-columns] (reduce (fn [cs c] (if (< (.indexOf cs c) 0) (conj cs c) cs)) columns row-columns))
-(table-columns ["cc" "bb"] (row-columns (list {:col "aa", :val "aa"} {:col "bb", :val "bb"})))
-;; ["cc" "bb" "aa"]
-(table-columns [] (row-columns (list {:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"})))
-;; ["/a/b" "/a/c"]
-
-(defn row-perform
-  [table row]
-  (let [row-columns (row-columns row)
-        table-columns (table-columns (:cols table) row-columns)
-        row-vals (row-vals row table-columns)]
-    {:cols table-columns :rows (conj (:rows table) row-vals)}))
-(row-perform {:cols ["cc" "bb"] :rows []} (list {:col "aa", :val "aa"} {:col "bb", :val "bb"}))
-;; {:cols ["cc" "bb" "aa"], :rows [(nil "bb" "aa")]}
-(row-perform {:cols ["/a/b" "/a/c"] :rows []} (list {:col "/a/b", :val "aa"} {:col "/a/c", :val "bb"}))
-;; {:cols ["/a/b" "/a/c"], :rows [("aa" "bb")]}
-
-(defn tree-to-table [element] (reduce row-perform {:cols [] :rows []} (tree-to-rows element "")))
-(tree-to-table clojure-x)
-;; {:cols ["/a/b/d" "/a/b/e" "/a/b/c"], :rows [("bb" "cc") ("ee" "ff" "dd")]}
+#clojure.data.xml.Element{:tag :aa, :attrs {}, :content (
+                                                          #clojure.data.xml.Element{:tag :bb, :attrs {}, :content (
+                                                                                                                    #clojure.data.xml.Element{:tag :a, :attrs {}, :content ("a1")}
+                                                                                                                    #clojure.data.xml.Element{:tag :b, :attrs {}, :content ("b1")}
+                                                                                                                    #clojure.data.xml.Element{:tag :c, :attrs {}, :content ("c1")}
+                                                                                                                    )
+                                                                                    }
+                                                          #clojure.data.xml.Element{:tag :bb, :attrs {}, :content (
+                                                                                                                    #clojure.data.xml.Element{:tag :a, :attrs {}, :content ("a2")}
+                                                                                                                    #clojure.data.xml.Element{:tag :b, :attrs {}, :content ("b2")}
+                                                                                                                    #clojure.data.xml.Element{:tag :c, :attrs {}, :content ("c2")}
+                                                                                                                    )
+                                                                                    }
+                                                          #clojure.data.xml.Element{:tag :d, :attrs {}, :content ("d1")}
+                                                          )
+                          }
