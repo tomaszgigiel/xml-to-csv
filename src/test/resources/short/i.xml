@@ -1,13 +1,13 @@
-<a>
- <b>
-  <c>aa</c>
-  <d>bb</d>
-  <e>cc</e>
- </b>
- <b>
-  <c>dd</c>
-  <d>ee</d>
-  <e>ff</e>
- </b>
- <f>gg</f>
-</a>
+<aa>
+ <bb>
+  <a>a1</a>
+  <b>b1</b>
+  <c>c1</c>
+ </bb>
+ <bb>
+  <a>a2</a>
+  <b>b2</b>
+  <c>c2</c>
+ </bb>
+ <d>d1</d>
+</aa>

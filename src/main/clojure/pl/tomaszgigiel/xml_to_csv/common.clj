@@ -7,9 +7,9 @@
 
 (defn flatten-to-penultimate [l]
   (cond
-    (and (list? l) (map? (first l))) l
-    (and (list? l) (list? (first l)) (= (count l) 1)) (flatten-to-penultimate (first l))
-    (and (list? l) (list? (first l))) (map flatten-to-penultimate l)
+    (and (seq? l) (map? (first l))) l
+    (and (seq? l) (seq? (first l)) (= (count l) 1)) (flatten-to-penultimate (first l))
+    (and (seq? l) (seq? (first l))) (map flatten-to-penultimate l)
     :else l))
 
 (defn tree-to-rows-helper [element path] 

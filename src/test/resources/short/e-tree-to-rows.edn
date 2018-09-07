@@ -1,8 +1,4 @@
-{
-:cols [
-[:a :b :c] [:a :b :d] [:a :b :e]]
-
-:rows [
-["aa" "bb" "cc"]
-["dd" "ee"]]
-}
+(
+  ({:col "/aa/bb/a" :val "a1"} {:col "/aa/bb/b" :val "b1"} {:col "/aa/bb/c" :val "c1"})
+  ({:col "/aa/bb/a" :val "a2"} {:col "/aa/bb/b" :val "b2"})
+)
