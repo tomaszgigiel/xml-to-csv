@@ -10,7 +10,6 @@
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
   (:import java.io.StringReader))
 
-
 (comment
 (
   ({:col "/aa/bb/a" :val "a1"} {:col "/aa/bb/b" :val "b1"} {:col "/aa/bb/c" :val "c1"})
@@ -23,9 +22,6 @@
   ({:col "/aa/bb/e" :val "e2"} {:col "/aa/bb/f" :val "f2"} {:col "/aa/bb/g" :val "g2"})
   ({:col "/aa/bb/e" :val "e3"} {:col "/aa/bb/f" :val "f3"} {:col "/aa/bb/g" :val "g3"})
 )
-
-(defn merge-rows []
-  ())
 
 (def clojure-i (->> "short/i.xml" io/resource str clojure-xml/parse))
 
