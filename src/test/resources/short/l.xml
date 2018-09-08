@@ -1,0 +1,65 @@
+<aa>
+ <bb>
+  <cc>
+   <dd>
+    <a>a1</a>
+    <b>b1</b>
+    <c>c1</c>
+   </dd>
+   <dd>
+    <a>a2</a>
+    <b>b2</b>
+    <c>c2</c>
+   </dd>
+   <dd>
+    <a>a3</a>
+    <b>b3</b>
+    <c>c3</c>
+   </dd>
+  </cc>
+  <d>d1</d>
+ </bb>
+
+ <bb>
+  <cc>
+   <dd>
+    <a>a1</a>
+    <b>b1</b>
+    <c>c1</c>
+   </dd>
+   <dd>
+    <a>a2</a>
+    <b>b2</b>
+    <c>c2</c>
+   </dd>
+   <dd>
+    <a>a3</a>
+    <b>b3</b>
+    <c>c3</c>
+   </dd>
+  </cc>
+  <d>d2</d>
+ </bb>
+
+ <bb>
+  <cc>
+   <dd>
+    <a>a1</a>
+    <b>b1</b>
+    <c>c1</c>
+   </dd>
+   <dd>
+    <a>a2</a>
+    <b>b2</b>
+    <c>c2</c>
+   </dd>
+   <dd>
+    <a>a3</a>
+    <b>b3</b>
+    <c>c3</c>
+   </dd>
+  </cc>
+  <d>d3</d>
+ </bb>
+
+</aa>
