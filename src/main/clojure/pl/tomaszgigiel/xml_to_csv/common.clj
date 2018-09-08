@@ -2,6 +2,7 @@
   (:require [clojure.xml :as clojure-xml])
   (:require [clojure.string :as string])
   (:require [clojure.tools.logging :as log])
+  (:require [pl.tomaszgigiel.xml-to-csv.merging :as merging])
   (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:gen-class))
 
@@ -12,6 +13,11 @@
     (and (seq? l) (seq? (first l))) (map flatten-to-penultimate l)
     :else l))
 
+(defn always-rows [l]
+  (cond
+    (and (seq? l) (map? (first l))) (list l)
+    :else l))
+
 (defn tree-to-rows-helper [element path] 
   (let [new-path (str path "/" (name (:tag element)))
         new-content (:content element)]
@@ -20,7 +26,10 @@
       (sequential? new-content) (map #(tree-to-rows-helper % new-path) new-content))))
 
 (defn tree-to-rows [element]
-  (flatten-to-penultimate (tree-to-rows-helper element "")))
+  (merging/merged
+    (always-rows
+      (flatten-to-penultimate 
+        (tree-to-rows-helper element "")))))
 
 (defn row-columns [row] (reduce (fn [columns r] (conj columns (:col r))) [] row))
 

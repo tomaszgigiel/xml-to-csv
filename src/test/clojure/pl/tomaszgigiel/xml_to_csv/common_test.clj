@@ -34,6 +34,8 @@
       k-element (->> "short/k.xml" io/resource str clojure-xml/parse)
       l-element (->> "short/l.xml" io/resource str clojure-xml/parse)]
 
+  (println (common/tree-to-rows-helper a-element ""))
+  
   (deftest tree-to-rows-test
    (is (= (->> "short/a-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a-element)))
    (is (= (->> "short/b-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows b-element)))
@@ -43,7 +45,7 @@
    (is (= (->> "short/f-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows f-element)))
    (is (= (->> "short/g-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows g-element)))
    (is (= (->> "short/h-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows h-element)))
-   ;;(is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element)))
+   (is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element)))
    ;;(is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
    (is (= (->> "short/k-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows k-element)))
    ;;(is (= (->> "short/l-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows l-element)))

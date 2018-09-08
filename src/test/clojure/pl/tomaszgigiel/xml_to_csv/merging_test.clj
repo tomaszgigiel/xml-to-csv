@@ -9,18 +9,22 @@
 (let [a '(({1 "a1"}) ({2 "a2"}) ({3 "a3"}) {4 "d1"})
       a-core '(({1 "a1"}) ({2 "a2"}) ({3 "a3"}))
       a-merge '({4 "d1"})
-      a-merged '(({1 "a1"} {4 "d1"}) ({2 "a2"} {4 "d1"}) ({3 "a3"} {4 "d1"}))]
+      a-merged '(({1 "a1"} {4 "d1"}) ({2 "a2"} {4 "d1"}) ({3 "a3"} {4 "d1"}))
+      b '(({1 "a1"} {2 "b"}))]
 
 (deftest merge?-test
   (is (= false (merging/merge? () ())))
   (is (= true (merging/merge? () {1 "a1"}))))
 
 (deftest to-merge-test
- (is (= a-merge (merging/to-merge a))))
+ (is (= a-merge (merging/to-merge a)))
+ (is (= () (merging/to-merge b))))
 
 (deftest to-core-test
-  (is (= a-core (merging/to-core a))))
+  (is (= a-core (merging/to-core a)))
+  (is (= b (merging/to-core b))))
 
 (deftest merged-test
- (is (= a-merged (merging/merged a))))
+ (is (= a-merged (merging/merged a)))
+ (is (= b (merging/merged b))))
 )
