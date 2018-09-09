@@ -11,6 +11,8 @@
 (use-fixtures :once test-config/once-fixture)
 (use-fixtures :each test-config/each-fixture)
 
+(comment
+  ;;TODO: it is needed?
 (deftest flatten-to-penultimate-test
   (is (= '() (common/flatten-to-penultimate '())))
   (is (= '({1 a} {2 b}) (common/flatten-to-penultimate '({1 a} {2 b}))))
@@ -20,6 +22,7 @@
   (is (= '(({1 a1} {2 b1})({1 a2} {2 b2})) (common/flatten-to-penultimate '(((({1 a1} {2 b1})))((({1 a2} {2 b2})))))))
   (is (= '(({1 a1} {2 b1})({1 a2} {2 b2})) (common/flatten-to-penultimate '((((({1 a1} {2 b1}))))(((({1 a2} {2 b2}))))))))
   (is (= '(({1 "a1"} {2 "b1"} {3 "c1"})({1 "a2"} {2 "b2"} {3 "c2"})) (common/flatten-to-penultimate '((({1 "a1"} {2 "b1"} {3 "c1"}))(({1 "a2"} {2 "b2"} {3 "c2"})))))))
+)
 
 (let [a-element (->> "short/a.xml" io/resource str clojure-xml/parse)
       b-element (->> "short/b.xml" io/resource str clojure-xml/parse)
@@ -34,7 +37,7 @@
       k-element (->> "short/k.xml" io/resource str clojure-xml/parse)
       l-element (->> "short/l.xml" io/resource str clojure-xml/parse)]
 
-  (println (common/tree-to-rows-helper a-element ""))
+  ;;(println  (common/tree-to-rows-helper j-element ""))
   
   (deftest tree-to-rows-test
    (is (= (->> "short/a-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a-element)))
@@ -46,9 +49,9 @@
    (is (= (->> "short/g-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows g-element)))
    (is (= (->> "short/h-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows h-element)))
    (is (= (->> "short/i-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows i-element)))
-   ;;(is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
+   (is (= (->> "short/j-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows j-element)))
    (is (= (->> "short/k-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows k-element)))
-   ;;(is (= (->> "short/l-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows l-element)))
+   (is (= (->> "short/l-tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows l-element)))
    )
 
   ;;(deftest tree-to-table-test
