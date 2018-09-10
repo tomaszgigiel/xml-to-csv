@@ -1,0 +1,46 @@
+{
+:parsed
+
+  (
+    (
+      (
+        ({:col "a" :val "a11"} {:col "b" :val "b11"} {:col "c" :val "c11"})
+        ({:col "a" :val "a12"} {:col "b" :val "b12"} {:col "c" :val "c12"})
+        ({:col "a" :val "a13"} {:col "b" :val "b13"} {:col "c" :val "c13"})
+      )
+      {:col "d" :val "d1"}
+    )
+
+    (
+      (
+        ({:col "a" :val "a21"} {:col "b" :val "b21"} {:col "c" :val "c21"})
+        ({:col "a" :val "a22"} {:col "b" :val "b22"} {:col "c" :val "c22"})
+        ({:col "a" :val "a23"} {:col "b" :val "b23"} {:col "c" :val "c23"})
+      )
+      {:col "d" :val "d2"}
+    )
+
+    (
+      (
+        ({:col "a" :val "a31"} {:col "b" :val "b31"} {:col "c" :val "c31"})
+        ({:col "a" :val "a32"} {:col "b" :val "b32"} {:col "c" :val "c32"})
+        ({:col "a" :val "a33"} {:col "b" :val "b33"} {:col "c" :val "c33"})
+      )
+      {:col "d" :val "d3"}
+    )
+  )
+
+:merged
+
+  (
+    ({:col "a" :val "a11"} {:col "b" :val "b11"} {:col "c" :val "c11"} {:col "d" :val "d1"})
+    ({:col "a" :val "a12"} {:col "b" :val "b12"} {:col "c" :val "c12"} {:col "d" :val "d1"})
+    ({:col "a" :val "a13"} {:col "b" :val "b13"} {:col "c" :val "c13"} {:col "d" :val "d1"})
+    ({:col "a" :val "a21"} {:col "b" :val "b21"} {:col "c" :val "c21"} {:col "d" :val "d2"})
+    ({:col "a" :val "a22"} {:col "b" :val "b22"} {:col "c" :val "c22"} {:col "d" :val "d2"})
+    ({:col "a" :val "a23"} {:col "b" :val "b23"} {:col "c" :val "c23"} {:col "d" :val "d2"})
+    ({:col "a" :val "a31"} {:col "b" :val "b31"} {:col "c" :val "c31"} {:col "d" :val "d3"})
+    ({:col "a" :val "a32"} {:col "b" :val "b32"} {:col "c" :val "c32"} {:col "d" :val "d3"})
+    ({:col "a" :val "a33"} {:col "b" :val "b33"} {:col "c" :val "c33"} {:col "d" :val "d3"})
+  )
+}
