@@ -1,0 +1,4 @@
+(
+  ({:col "/aa/bb/cc/a" :val "a1"} {:col "/aa/bb/cc/b" :val "b1"} {:col "/aa/bb/cc/c" :val "c1"})
+  ({:col "/aa/bb/cc/a" :val "a2"} {:col "/aa/bb/cc/b" :val "b2"} {:col "/aa/bb/cc/c" :val "c2"})
+)

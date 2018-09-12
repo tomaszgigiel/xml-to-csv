@@ -1,45 +1,40 @@
 (ns pl.tomaszgigiel.xml-to-csv.merging-test
   (:use [clojure.test])
+  (:require [clojure.edn :as edn])
+  (:require [clojure.java.io :as io])
+  (:require [clojure.xml :as clojure-xml])
   (:require [pl.tomaszgigiel.xml-to-csv.merging :as merging])
+  (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config]))
 
 (use-fixtures :once test-config/once-fixture)
 (use-fixtures :each test-config/each-fixture)
 
-(let [a '(({:col 1 :val "a1"} {:col 2 :val "a2"} {:col 3 :val "a3"}) {:col 4 :val "d1"})
-      a-core '(({:col 1 :val "a1"} {:col 2 :val "a2"} {:col 3 :val "a3"}))
-      a-merge '({:col 4 :val "d1"})
-      a-merged '(({:col 1 :val "a1"} {:col 2 :val "a2"} {:col 3 :val "a3"} {:col 4 :val "d1"}))]
+(let [a (->> "a/input.xml" io/resource str clojure-xml/parse)
+      b (->> "b/input.xml" io/resource str clojure-xml/parse)
+      c (->> "c/input.xml" io/resource str clojure-xml/parse)
+      d (->> "d/input.xml" io/resource str clojure-xml/parse)
+      e (->> "e/input.xml" io/resource str clojure-xml/parse)
+      f (->> "f/input.xml" io/resource str clojure-xml/parse)
+      g (->> "g/input.xml" io/resource str clojure-xml/parse)
+      h (->> "h/input.xml" io/resource str clojure-xml/parse)
+      i (->> "i/input.xml" io/resource str clojure-xml/parse)
+      j (->> "j/input.xml" io/resource str clojure-xml/parse)
+      k (->> "k/input.xml" io/resource str clojure-xml/parse)
+      l (->> "l/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)]
 
-  (deftest a-test
-    (is (= a-core (merging/to-core a)))
-    (is (= a-merge (merging/to-merge a)))
-    (is (= a-merged (merging/merged a))))
-)
-
-(let [b '(({:col 1 :val "a1"} {:col 2 :val "b"}))]
-
-  (deftest b-test
-    (is (= b (merging/to-core b)))
-    (is (= () (merging/to-merge b)))
-    (is (= b (merging/merged b))))
-)
-
-(let [c '(({:col 1 :val "a1"} {:col 2 :val "b1"} {:col 3 :val "c1"})
-           ({:col 1 :val"a2"} {:col 2 :val "b2"} {:col 3 :val "c2"})
-           {:col 4 :val "d1"}
-           ({:col 5 :val "e1"} {:col 6 :val "f1"} {:col 7 :val "g1"})
-           ({:col 5 :val "e2"} {:col 6 :val "f2"} {:col 7 :val "g2"}))
-      c-core '(({:col 1 :val "a1"} {:col 2 :val "b1"} {:col 3 :val "c1"})
-                ({:col 1 :val "a2"} {:col 2 :val "b2"} {:col 3 :val "c2"}))
-      c-merge '({:col 4 :val "d1"}
-                 ({:col 5 :val "e1"} {:col 6 :val "f1"} {:col 7 :val"g1"})
-                 ({:col 5 :val "e2"} {:col 6 :val "f2"} {:col 7 :val"g2"}))
-      c-merged '(({:col 1 :val "a1"} {:col 2 :val "b1"} {:col 3 :val "c1"} {:col 4 :val "d1"} {:col 5 :val "e1"} {:col 6 :val "f1"} {:col 7 :val "g1"} {:col 5 :val "e2"} {:col 6 :val "f2"} {:col 7 :val "g2"})
-                  ({:col 1 :val "a2"} {:col 2 :val "b2"} {:col 3 :val "c2"} {:col 4 :val "d1"} {:col 5 :val "e1"} {:col 6 :val "f1"} {:col 7 :val "g1"} {:col 5 :val "e2"} {:col 6 :val "f2"} {:col 7 :val "g2"}))]
-
-  (deftest c-test
-    (is (= c-core (merging/to-core c)))
-    (is (= c-merge (merging/to-merge c)))
-    (is (= c-merged (merging/merged c))))
+  (deftest merged-test
+    ;;(is (= (->> "a/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a)))
+    ;;(is (= (->> "b/merged.edn" misc/string-from-resource edn/read-string) (merging/merged b)))
+    ;;(is (= (->> "c/merged.edn" misc/string-from-resource edn/read-string) (merging/merged c)))
+    ;;(is (= (->> "d/merged.edn" misc/string-from-resource edn/read-string) (merging/merged d)))
+    ;;(is (= (->> "e/merged.edn" misc/string-from-resource edn/read-string) (merging/merged e)))
+    ;;(is (= (->> "f/merged.edn" misc/string-from-resource edn/read-string) (merging/merged f)))
+    ;;(is (= (->> "g/merged.edn" misc/string-from-resource edn/read-string) (merging/merged g)))
+    ;;(is (= (->> "h/merged.edn" misc/string-from-resource edn/read-string) (merging/merged h)))
+    ;;(is (= (->> "i/merged.edn" misc/string-from-resource edn/read-string) (merging/merged i)))
+    ;;(is (= (->> "j/merged.edn" misc/string-from-resource edn/read-string) (merging/merged j)))
+    ;;(is (= (->> "k/merged.edn" misc/string-from-resource edn/read-string) (merging/merged k)))
+    (is (= (->> "l/merged.edn" misc/string-from-resource edn/read-string) (merging/merged l)))
+   )
 )

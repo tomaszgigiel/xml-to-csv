@@ -1,8 +1,0 @@
-{
-:cols [
-[:a :b :c] [:a :b :d] [:a :b :e]]
-
-:rows [
-["aa" "bb" "cc"]
-["dd" nil "ff"]]
-}

@@ -6,21 +6,6 @@
   (:require [pl.tomaszgigiel.xml-to-csv.misc :as misc])
   (:gen-class))
 
-(comment
-  ;;TODO: it is needed?
-(defn flatten-to-penultimate [l]
-  (cond
-    (and (seq? l) (map? (first l))) l
-    (and (seq? l) (seq? (first l)) (= (count l) 1)) (flatten-to-penultimate (first l))
-    (and (seq? l) (seq? (first l))) (map flatten-to-penultimate l)
-    :else l))
-(defn tree-to-rows-2 [element]
-  (merging/merged
-    (always-rows
-      (flatten-to-penultimate 
-        (tree-to-rows-helper element "")))))
-)
-
 (defn always-rows [l]
   (cond
     (and (seq? l) (map? (first l))) (list l)

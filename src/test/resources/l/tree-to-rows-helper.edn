@@ -1,0 +1,26 @@
+(
+  (
+    (
+      ({:col "/aa/bb/cc/dd/a" :val "a1"} {:col "/aa/bb/cc/dd/b" :val "b1"} {:col "/aa/bb/cc/dd/c" :val "c1"})
+      ({:col "/aa/bb/cc/dd/a" :val "a2"} {:col /aa/bb/cc/dd/b :val b2} {:col /aa/bb/cc/dd/c :val c2})
+      ({:col "/aa/bb/cc/dd/a" :val "a3"} {:col /aa/bb/cc/dd/b :val b3} {:col /aa/bb/cc/dd/c :val c3})
+    )
+    {:col /aa/bb/d :val d1}
+  )
+  (
+    (
+      ({:col "/aa/bb/cc/dd/a" :val "a1"} {:col /aa/bb/cc/dd/b :val b1} {:col /aa/bb/cc/dd/c :val c1})
+      ({:col "/aa/bb/cc/dd/a" :val "a2"} {:col /aa/bb/cc/dd/b :val b2} {:col /aa/bb/cc/dd/c :val c2})
+      ({:col "/aa/bb/cc/dd/a" :val "a3"} {:col /aa/bb/cc/dd/b :val b3} {:col /aa/bb/cc/dd/c :val c3})
+    )
+    {:col /aa/bb/d :val d2}
+  )
+  (
+    (
+      ({:col "/aa/bb/cc/dd/a" :val "a1"} {:col "/aa/bb/cc/dd/b" :val "b1"} {:col "/aa/bb/cc/dd/c" :val "c1"})
+      ({:col "/aa/bb/cc/dd/a" :val "a2"} {:col "/aa/bb/cc/dd/b" :val "b2"} {:col "/aa/bb/cc/dd/c" :val "c2"})
+      ({:col "/aa/bb/cc/dd/a" :val "a3"} {:col "/aa/bb/cc/dd/b" :val "b3"} {:col "/aa/bb/cc/dd/c" :val "c3"})
+    )
+    {:col "/aa/bb/d :val d3}
+  )
+)
