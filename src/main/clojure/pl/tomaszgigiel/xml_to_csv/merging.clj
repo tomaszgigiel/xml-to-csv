@@ -7,7 +7,7 @@
 
 (defn row? [l] (and (seq? l) (every? map? l)))
 (defn list-of-rows? [l] (and (seq? l) (every? row? l)))
-(defn list-of-list? [l] (and (seq? l) (every? list? l)))
+(defn list-of-list? [l] (and (seq? l) (every? seq? l)))
 (defn list-of-rows-and-maps? [coll] (and (seq? coll)(list-of-rows? (first coll))(every? map? (rest coll))))
 (defn list-of-row-or-map? [coll] (and (seq? coll) (every? (fn [x] (or (row? x)(map? x))) coll)))
 
@@ -37,4 +37,4 @@
                                                                        (merge-horizontal? cc (first b)) (merged-horizontal a b)
                                                                        (merge-vertical? cc (first b)) (merged-vertical a b))) () coll))
     (list-of-list? coll) (merged (map merged coll))
-    :defult ()))
+    :defult "unsupported"))
