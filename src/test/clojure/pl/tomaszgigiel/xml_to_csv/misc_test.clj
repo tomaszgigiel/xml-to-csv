@@ -7,7 +7,7 @@
 (use-fixtures :each test-config/each-fixture)
 
 (deftest string-from-resource-test
-  (is (.contains (misc/string-from-resource "sample-simple.xml") "<books>")) "string")
+  (is (.contains (misc/string-from-resource "a01/input.xml") "<a>")))
 
 (deftest not-nil?-test
   (is (= false (misc/not-nil? nil)) "nil")
