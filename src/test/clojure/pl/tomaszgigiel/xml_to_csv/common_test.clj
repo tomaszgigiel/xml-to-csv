@@ -39,7 +39,7 @@
    (is (= (->> "a10/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a10)))
    (is (= (->> "a11/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a11)))
    (is (= (->> "a12/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a12)))
-   ;;(is (= (->> "a13/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a13)))
+   (is (= (->> "a13/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a13)))
    ;;(is (= (->> "a14/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a14)))
    )
 

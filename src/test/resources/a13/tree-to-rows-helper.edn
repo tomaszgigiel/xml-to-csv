@@ -1,1 +1,16 @@
-()
+(
+  (
+    {:col "/aa/bb/a" :val "a1"}
+    (
+      ({:col "/aa/bb/cc/dd/b" :val "b11"} {:col "/aa/bb/cc/dd/c" :val "c11"})
+      ({:col "/aa/bb/cc/dd/b" :val "b12"} {:col "/aa/bb/cc/dd/c" :val "c12"})
+    )
+  )
+  (
+    {:col "/aa/bb/a" :val "a2"}
+    (
+      ({:col "/aa/bb/cc/dd/b" :val "b21"} {:col "/aa/bb/cc/dd/c" :val "c21"})
+      ({:col "/aa/bb/cc/dd/b" :val "b22"} {:col "/aa/bb/cc/dd/c" :val "c22"})
+    )
+  )
+)

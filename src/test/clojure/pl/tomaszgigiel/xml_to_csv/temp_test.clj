@@ -12,7 +12,7 @@
   (:import java.io.StringReader))
 
 
-(def a12 (-> "a12/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
+(def a13 (-> "a13/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
 
 (defn get-cols [row] (set (map :col row)))
 
@@ -50,5 +50,5 @@
     (list-of-list? coll) (merged (map merged coll))
     :defult "unknown"))
 
-(merged a12)
+(merged a13)
 
