@@ -1,5 +1,5 @@
-books/book/title;books/book/authors/author/first-name;books/book/authors/author/last-name
-Clojure in Action;Amit;Rathore
-Clojure in Action;Francis;Avila
-The Joy of Clojure;Michael;Fogus
-The Joy of Clojure;Chris;Houser
+aa/bb/a;aa/bb/dd/b;aa/bb/dd/c
+a1;b11;c11
+a1;b12;c12
+a2;b21;c21
+a2;b22;22

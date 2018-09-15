@@ -13,11 +13,11 @@
 (deftest merged-horizontal-test
   (is ( = '(({1 1} {2 2} {3 3})) (merging/merged-horizontal '({1 1} {2 2}) {3 3})))
   (is ( = '(({1 1} {2 2} {3 3})) (merging/merged-horizontal '(({1 1} {2 2})) {3 3})))
-  (is ( = '(({1 1} {2 2} {3 3}) ({11 11}{22 22}{3 3})) (merging/merged-horizontal '(({1 1} {2 2}) ({11 11} {22 22})) {3 3}))))
+  (is ( = '(({1 1} {2 2} {3 3}) ({11 11} {22 22} {3 3})) (merging/merged-horizontal '(({1 1} {2 2}) ({11 11} {22 22})) {3 3}))))
 
 (deftest merged-vertical-test
-  (is ( = '(({3 3}) ({1 1}{2 2})) (merging/merged-vertical '({1 1} {2 2}) {3 3})))
-  (is ( = '(({3 3}) ({1 1}{2 2})) (merging/merged-vertical '(({1 1} {2 2})) {3 3})))
+  (is ( = '(({3 3}) ({1 1} {2 2})) (merging/merged-vertical '({1 1} {2 2}) {3 3})))
+  (is ( = '(({3 3}) ({1 1} {2 2})) (merging/merged-vertical '(({1 1} {2 2})) {3 3})))
   (is ( = '(({3 3}) ({1 1} {2 2}) ({11 11} {22 22})) (merging/merged-vertical '(({1 1} {2 2}) ({11 11} {22 22})) {3 3}))))
 
 (let [a01 (->> "a01/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)
