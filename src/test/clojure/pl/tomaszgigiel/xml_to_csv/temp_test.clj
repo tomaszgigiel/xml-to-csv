@@ -11,7 +11,8 @@
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
   (:import java.io.StringReader))
 
-(def a09 (-> "a09/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
+(def a10p (->> "a10/input.xml" io/resource str clojure-xml/parse))
+(def a10 (-> "a10/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
 
 (defn get-cols [row] (set (map :col row)))
 
@@ -39,9 +40,14 @@
                                        cols (get-cols h)]
                                    (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
-(defn merged-row-or-map [coll] (let [rs (filter row? coll)
-                                     ms (filter map? coll)]
-                                 (merged-horizontal rs ms)))
+(defn merged-row-or-map-2 [coll] (let [rs (filter row? coll)
+                                       ms (filter map? coll)]
+                                   (merged-horizontal rs ms)))
+
+(defn merged-row-or-map [coll] (let [h (first (filter rows? coll))
+                                     t (rest coll)
+                                     cols (get-cols h)]
+                                  (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
 (defn merged-rows-or-map [coll] (let [rs (first (filter rows? coll))
                                       ms (filter map? coll)]
@@ -58,28 +64,11 @@
     (list-of-list? coll) (merged (map merged coll))
     :defult "unsupported"))
 
+(merged a10)
 
-(merged a09)
+(defn merged-row-or-map [coll] (let [h (first (filter rows? coll))
+                                     t (rest coll)
+                                     cols (get-cols h)]
+                                  (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
-
-;;;;
-
-
-(every? map? '({:col "/aa/bb/a", :val "a1"} {:col "/aa/bb/b", :val "b1"} {:col "/aa/bb/c", :val "c1"}))
-
-(defn row? [coll] (and (println coll) (seq? coll) (every? map? coll)))
-(defn rows? [coll] (and (seq? coll) (every? row? coll)))
-(rows? a09)
-
-
-(rows?
-  '(
-     ({:col "/aa/bb/a", :val "a1"} {:col "/aa/bb/b", :val "b1"} {:col "/aa/bb/c", :val "c1"})
-     ({:col "/aa/bb/a", :val "a2"} {:col "/aa/bb/b", :val "b2"} {:col "/aa/bb/c", :val "c2"})
-     {:col "/aa/d", :val "d1"}
-   )
-)
-
-
-
-
+(merged-row-or-map a10)
