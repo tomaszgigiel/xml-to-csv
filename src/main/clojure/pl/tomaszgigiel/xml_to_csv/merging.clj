@@ -29,9 +29,10 @@
                                        cols (get-cols h)]
                                    (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
-(defn merged-row-or-map [coll] (let [rs (filter row? coll)
-                                     ms (filter map? coll)]
-                                 (merged-horizontal rs ms)))
+(defn merged-row-or-map [coll] (let [h (first (filter row? coll))
+                                     t (rest coll)
+                                     cols (get-cols h)]
+                                 (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
 (defn merged-rows-or-map [coll] (let [rs (first (filter rows? coll))
                                       ms (filter map? coll)]

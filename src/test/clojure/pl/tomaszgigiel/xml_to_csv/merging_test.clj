@@ -33,7 +33,8 @@
       a11 (->> "a11/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)
       a12 (->> "a12/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)
       a13 (->> "a13/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)
-      a14 (->> "a14/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)]
+      a14 (->> "a14/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)
+      a15 (->> "a15/tree-to-rows-helper.edn" misc/string-from-resource edn/read-string)]
 
   (deftest merged-test
     (is (= (->> "a01/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a01)))
@@ -50,5 +51,6 @@
     (is (= (->> "a12/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a12)))
     (is (= (->> "a13/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a13)))
     (is (= (->> "a14/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a14)))
+    (is (= (->> "a15/merged.edn" misc/string-from-resource edn/read-string) (merging/merged a15)))
    )
 )
