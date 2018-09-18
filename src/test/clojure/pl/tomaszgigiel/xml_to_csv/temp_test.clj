@@ -11,8 +11,8 @@
   (:require [pl.tomaszgigiel.xml-to-csv.test-config :as test-config])
   (:import java.io.StringReader))
 
-(def a10p (->> "a10/input.xml" io/resource str clojure-xml/parse))
-(def a10 (-> "a10/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
+(def a15p (->> "a15/input.xml" io/resource str clojure-xml/parse))
+(def a15 (-> "a15/input.xml" io/resource str clojure-xml/parse (common/tree-to-rows-helper "")))
 
 (defn get-cols [row] (set (map :col row)))
 
@@ -40,14 +40,15 @@
                                        cols (get-cols h)]
                                    (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
-(defn merged-row-or-map-2 [coll] (let [rs (filter row? coll)
-                                       ms (filter map? coll)]
-                                   (merged-horizontal rs ms)))
+(defn merged-row-or-map-2 [coll] (let [h (first (filter row? coll))
+                                       t (rest coll)
+                                       cols (get-cols h)]
+                                   (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
 
-(defn merged-row-or-map [coll] (let [h (first (filter rows? coll))
+(defn merged-row-or-map [coll] (let [h (first (filter row? coll))
                                      t (rest coll)
                                      cols (get-cols h)]
-                                  (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
+                                 (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) () coll)))
 
 (defn merged-rows-or-map [coll] (let [rs (first (filter rows? coll))
                                       ms (filter map? coll)]
@@ -62,13 +63,6 @@
     (list-of-row-or-map? coll) (merged-row-or-map coll)
     (list-of-rows-or-map? coll) (merged (merged-rows-or-map coll))
     (list-of-list? coll) (merged (map merged coll))
-    :defult "unsupported"))
+    :default "unsupported"))
 
-(merged a10)
-
-(defn merged-row-or-map [coll] (let [h (first (filter rows? coll))
-                                     t (rest coll)
-                                     cols (get-cols h)]
-                                  (reduce (fn[a b] (if (merge-horizontal? cols b) (merged-horizontal a b) (merged-vertical a b))) h t)))
-
-(merged-row-or-map a10)
+(merged a15)

@@ -24,7 +24,8 @@
       a11 (->> "a11/input.xml" io/resource str clojure-xml/parse)
       a12 (->> "a12/input.xml" io/resource str clojure-xml/parse)
       a13 (->> "a13/input.xml" io/resource str clojure-xml/parse)
-      a14 (->> "a14/input.xml" io/resource str clojure-xml/parse)]
+      a14 (->> "a14/input.xml" io/resource str clojure-xml/parse)
+      a15 (->> "a15/input.xml" io/resource str clojure-xml/parse)]
 
   (deftest tree-to-rows-test
    (is (= (->> "a01/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a01)))
@@ -38,9 +39,10 @@
    (is (= (->> "a09/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a09)))
    (is (= (->> "a10/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a10)))
    (is (= (->> "a11/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a11)))
-   ;;(is (= (->> "a12/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a12)))
+   (is (= (->> "a12/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a12)))
    (is (= (->> "a13/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a13)))
    ;;(is (= (->> "a14/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a14)))
+   (is (= (->> "a15/tree-to-rows.edn" misc/string-from-resource edn/read-string) (common/tree-to-rows a15)))
    )
 
   ;;(deftest tree-to-table-test
